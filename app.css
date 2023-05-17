@@ -1,0 +1,162 @@
+*{
+    padding: 0 ;
+    margin:  0 ;
+    box-sizing: border-box;
+    list-style: none;
+}
+
+
+
+.container{
+    margin: 0  auto ;
+    width:  60%;
+    height: 600px;
+    padding: 10px ;
+    border: 1px solid red ;
+}
+
+#container__inputs__list {
+    max-height: 92%;
+    overflow: auto;
+
+}
+.container__head {
+    display: flex;
+}
+.container__head h2 {
+    width: 50% ;
+}
+
+.container__key__value__pair--input-row {
+    margin: 10px 0px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+}
+
+
+.container__key__input__wrapper {
+    width: 50%;
+}
+
+.container__value__input__wrapper {
+    width: 50%;
+}
+
+.container__key--input {
+    width: 70%;
+    height:  30px;
+    padding: 10px;
+    border-radius: 5px;
+    outline-color:  green;
+    border: 1px solid green;
+}
+
+.container__value--input {
+    width: 70%;
+    height: 30px;
+    padding: 10px;
+    border-radius: 5px;
+    outline-color:  green;
+    border: 1px solid green;
+}
+
+.container__add--btn {
+    padding: 6px 20px;
+    border:  1px solid transparent;
+    background-color: rgb(42, 161, 42);
+    color: white;
+    border-radius: 5px ;
+}
+
+.container__inputs__wrapper{
+    width: 100%;
+    height: 95%;
+}
+
+.container__key__value__close--btn {
+    padding: 7px;
+    width: 20%;
+    border:  1px solid transparent;
+    background-color:rgb(209, 28, 28);
+    color: white;
+    border-radius: 5px ;
+    margin-left: 10px;
+}
+
+.container__key__value__submit--btn{
+    padding: 8px 20px;
+    border: 1px solid transparent;
+    background-color: rgb(32, 101, 124);
+    color: white;
+    border-radius: 5px ;
+}
+
+@media screen and (max-width:768px) {
+    
+    .container{
+        width: 85%;
+    }
+}
+/* 
+form{
+    width: 100%;
+    height: 90%;
+    border: 1px solid red ;
+}
+
+.container__attributes{
+    width: 100%;
+    display: flex;
+    height: 90%;
+}
+.container__key__wrapper{
+    width: 50% ;
+    padding: 10px;
+    border: 1px solid red ;
+}
+.container__key--input , .container__value--input {
+    width: 80%;
+    padding: 8px;
+    margin-top: 20px;
+    border-radius: 5px;
+    outline-color:  green;
+    border: 1px solid green;
+}
+
+.container__value__wrapper{
+    width: 50%;
+    padding: 10px;
+    border: 1px solid red ;
+    white-space: nowrap;
+}
+
+
+#container__key--input-fields , #container__value--input-fields {
+    height: 80%;
+    overflow: auto;
+}
+
+.container__key__value__add--btn{
+    padding: 6px 20px;
+    margin-top: 25px;
+    border:  1px solid transparent;
+    background-color: rgb(42, 161, 42);
+    color: white;
+    border-radius: 5px ;
+
+}
+
+.container__key__value__close--btn {
+    padding: 5px 10px;
+    border:  1px solid transparent;
+    background-color:rgb(209, 28, 28);
+    color: white;
+    border-radius: 5px ;
+    margin-left: 10px;
+}
+
+
+button:disabled {
+    cursor: not-allowed;
+} */
