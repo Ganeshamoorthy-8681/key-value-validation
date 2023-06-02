@@ -9,9 +9,9 @@
 </head>
 <body>
     
-    <h1>Tag</h1>
+    <h1>TAGS</h1>
 
-        <form action="/action" class="container">
+        <form action="./index2.html" class="container">
 
         <div class="container__inputs__wrapper">
 
@@ -21,32 +21,28 @@
                     <h2> KEY  </h2>  <h2> VALUE</h2>
                 </li>
 
-                
                 <li class="container__key__value__pair--input-row">
 
                     <div class="container__key__input__wrapper">
-                         <input type="text" class="container__key--input" placeholder="Enter the Key" >
+                         <input type="text" class="container__key--input" placeholder="Enter the Key" required>
                          <p class="container__error__message"></p>
                     </div>
 
-                    <div class="container__value__input__wrapper" >
+                    <div class="container__value__input__wrapper">
                           <input type = text class="container__value--input" placeholder="Enter the Value">
-                          <!-- <button class="container__key__value__close--btn"> REMOVE </button> -->
-                         <p class="container__error__message"></p>
+                          <p class="container__error__message"></p>
                     </div>
                 </li>
-
             </ul>
 
             <button class="container__add--btn"> ADD + </button>
  
             </div>
 
-           <button  type="submit" class="container__key__value__submit--btn">SUBMIT</button>
+            
+           <button  type="submit" class="container__key__value__submit--btn disabled">SUBMIT</button>
+           
         </form>
-
-
-
 
 <script src="app.js"> </script>
 

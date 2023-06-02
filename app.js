@@ -1,137 +1,68 @@
 "use strict";
-let createInputFieldButton = document.querySelector(".container__add--btn");
-let createInputFieldElementsParent = document.querySelector("#container__inputs__list");
-let inputFieldKeyStart = document.querySelector(".container__key--input");
-let closeButtonStart = document.querySelector(".container__key__value__close--btn");
-let keyValueRowElement = document.getElementsByClassName("container__key__value__pair--input-row");
+//initialzing class used 
+const addButtonClassName = "container__add--btn";
+const groupInputClassName = "container__inputs__list";
+const removeButtonClassName = "container__key__value__close--btn";
+const singleInputPairClassName = "container__key__value__pair--input-row";
+const submitButtonClassName = "container__key__value__submit--btn";
+const keyInputsListClassName = "container__key--input";
+const valueInputsListClassName = "container__value--input";
+const keyWrapperClassName = "container__key__input__wrapper";
+const valueWrapperClassName = "container__value__input__wrapper";
+const errorMessageClassName = "container__error__message";
+const formElementClassName = "container";
+//getting the required elements
+const createInputFieldButton = document.getElementsByClassName(addButtonClassName)[0];
+const createInputFieldElementsParent = document.getElementById(groupInputClassName);
+const closeButtonStart = document.getElementsByClassName(removeButtonClassName)[0];
+const keyValueRowElement = document.getElementsByClassName(singleInputPairClassName);
+const submitButton = document.getElementsByClassName(submitButtonClassName)[0];
+const keyElementsList = document.getElementsByClassName(keyInputsListClassName);
+const inputFieldKeyStart = keyElementsList[0];
+const formElement = document.getElementsByClassName(formElementClassName)[0];
+//Error messages
+const duplicateKeyErrorMsg = "Please Provide a Unique Key";
+const nullKeyErrorMsg = "Please fill the above field it cannot be empty";
+const keyLengthErrorMsg = "Please ensure that the key is more than three characters";
+//variables used
 let keyValuePairs = {};
-let keyElementsList = document.getElementsByClassName("container__key--input");
 let keyList = [];
 let iserror = false;
-let isUnique = true;
-let isEmpty = true;
-// let isthere :boolean = true;
-function setError(event) {
-    iserror = true;
-    if (!isKeyUnique(event)) {
-        event.target.nextElementSibling.style.color = "red";
-        event.target.nextElementSibling.textContent = "Please Provide a Unique Key";
-    }
-    if (isEmpty) {
-        event.target.nextElementSibling.style.color = "blue";
-        event.target.nextElementSibling.textContent = "Key Cannot be empty";
-    }
-}
-function removeError(event) {
-    iserror = false;
-    event.target.nextElementSibling.textContent = "";
-}
-function removeInputFields(event) {
-    event.preventDefault();
-    let val = event.target.parentNode.previousElementSibling.children[0].value;
-    event.target.parentNode.parentNode.remove();
-    //reset
-    isUnique = true;
-    isEmpty = false;
-    let removedValue = '';
-    let index = keyList.indexOf(val);
-    removedValue = keyList[index];
-    keyList.splice(index, 1);
-    //NEEDS TO VALIDATE HERE 
-    for (let i of keyElementsList) {
-        if (i.value == removedValue) {
-            if (i.nextElementSibling) {
-                i.nextElementSibling.textContent = "";
-                keyList.push(i.value);
-                iserror = false;
-            }
-        }
-    }
-}
-function validateKey(event) {
-    isEmpty = isKeyempty(event);
-    if (isEmpty) {
-        setError(event);
-    }
-    else {
-        removeError(event);
-        isUnique = isKeyUnique(event);
-        if (!isUnique) {
-            setError(event);
-        }
-        else {
-            // for (let i of keyElementsList) {
-            //     if (i.nextElementSibling.text) {
-            //         i.nextElementSibling.textContent = "";
-            //    }
-            // }
-            removeError(event);
-        }
-    }
-    // if (isEmpty) {
-    //     setError(event);
-    // }
-    // else {
-    //     removeError(event);
-    // }
-    // if (!isEmpty) {
-    //     isUnique = isKeyUnique(event);
-    //     if (!isUnique || isEmpty) {
-    //         setError(event);
-    //     }
-    //     else {
-    //         removeError(event);
-    //     }
-    // }
-}
-function isKeyUnique(event) {
-    let key = event.target.value;
-    if (keyList.includes(key) && keyElementsList.length != keyList.length) {
-        return false;
-    }
-    if (key) {
-        keyList = [];
-        for (let keyElement of keyElementsList) {
-            if (!keyList.includes(key)) {
-                keyList.push(keyElement.value);
-            }
-        }
-    }
-    return true;
-}
-function isKeyempty(event) {
-    if (!event.target.value)
-        return true;
-    return false;
-}
+let valueBeforeChange;
+let duplicateKey;
+let duplicateKeyList = [];
 function createInputField(event) {
     event.preventDefault();
+    //generates the key value pairs
+    renderKeyValuePairs();
+    //check for error msg and empty fields in all key field
     checkAllkeyFields();
-    if (isUnique && !isEmpty && !iserror) {
+    //no  error means create the new input fields
+    if (!iserror && keyElementsList.length == keyList.length) {
         //create a require elements
-        getKeyValuePair();
-        let createliElement = document.createElement("li");
-        let createKeyInputElement = document.createElement("input");
-        let createValueInputElement = document.createElement("input");
-        let errorMessageElementKey = document.createElement("p");
-        let errorMessageElementValue = document.createElement("p");
-        let createDivKeyWrapper = document.createElement("div");
-        let createDivValueWrapper = document.createElement("div");
-        let removeInputFieldsButton = document.createElement('button');
-        //add requires classes and attributes 
+        const createliElement = document.createElement("li");
+        const createKeyInputElement = document.createElement("input");
+        const createValueInputElement = document.createElement("input");
+        const errorMessageElementKey = document.createElement("p");
+        const errorMessageElementValue = document.createElement("p");
+        const createDivKeyWrapper = document.createElement("div");
+        const createDivValueWrapper = document.createElement("div");
+        const removeInputFieldsButton = document.createElement('button');
+        //add required  attributes 
         createKeyInputElement.setAttribute("type", "text");
         createValueInputElement.setAttribute("type", "text");
+        createKeyInputElement.setAttribute("required", "");
         removeInputFieldsButton.textContent = 'REMOVE';
-        //add classes and attach event listeners 
-        createliElement.classList.add("container__key__value__pair--input-row");
-        createDivKeyWrapper.classList.add("container__key__input__wrapper");
-        createDivValueWrapper.classList.add("container__value__input__wrapper");
-        createKeyInputElement.classList.add("container__key--input");
-        createValueInputElement.classList.add("container__value--input");
-        removeInputFieldsButton.classList.add("container__key__value__close--btn");
+        //add classes and attach event listeners
+        createliElement.classList.add(singleInputPairClassName);
+        createDivKeyWrapper.classList.add(keyWrapperClassName);
+        createDivValueWrapper.classList.add(valueWrapperClassName);
+        createKeyInputElement.classList.add(keyInputsListClassName);
+        createValueInputElement.classList.add(valueInputsListClassName);
+        removeInputFieldsButton.classList.add(removeButtonClassName);
+        errorMessageElementKey.classList.add(errorMessageClassName);
         removeInputFieldsButton.addEventListener("click", removeInputFields);
         createKeyInputElement.addEventListener("change", validateKey);
-        //createValueInputElement.addEventListener("change", validateKey); 
         //append them all 
         createDivKeyWrapper.append(createKeyInputElement, errorMessageElementKey);
         createDivValueWrapper.append(createValueInputElement, removeInputFieldsButton, errorMessageElementValue);
@@ -139,28 +70,145 @@ function createInputField(event) {
         createInputFieldElementsParent?.append(createliElement);
     }
 }
-inputFieldKeyStart?.addEventListener("change", validateKey);
-//inputFieldKeyStart?.addEventListener('change', validateKey);
-// closeButtonStart?.addEventListener("click", removeInputFields);
-createInputFieldButton?.addEventListener("click", createInputField);
-function checkAllkeyFields() {
-    for (let k of keyElementsList) {
-        if (k.value == '') {
-            isEmpty = true;
+function validateKey(event) {
+    let eventTarget = event.target;
+    if (event.target != null) {
+        let keyData = eventTarget.value;
+        //checking the length of the key 
+        if (keyData.length == 0) {
+            setError(eventTarget);
+            return;
         }
-        if (k.nextElementSibling?.textContent != "") {
+        else if (keyData.length < 3) {
+            setError(eventTarget, "length");
+            return;
+        }
+        else {
+            removeError(eventTarget);
+        }
+        //checking previously present or not; 
+        if (keyList.includes(keyData)) {
+            duplicateKey = keyData;
+            //backtracking the unique keys for validation purpose (storing in list)
+            duplicateKeyList.push(duplicateKey);
+            //setting the error 
+            setError(eventTarget, "unique");
+        }
+        else {
+            //removes the error 
+            removeError(eventTarget);
+        }
+        //generating the key value pair
+        renderKeyValuePairs();
+        // validate in case of unique key error
+        if (iserror && keyElementsList.length == keyList.length) {
+            for (let keyElement of keyElementsList) {
+                if (keyElement.value == duplicateKey ||
+                    duplicateKeyList.includes(keyElement.value)) {
+                    removeError(keyElement);
+                }
+            }
+        }
+    }
+}
+function setError(eventElement, errorType) {
+    iserror = true;
+    //adding disabled for submit button (user can't submit form when error)
+    submitButton.setAttribute('disabled', '');
+    submitButton.classList.add("disabled");
+    //error type is used to show multiple contraints 
+    if (eventElement.nextElementSibling != null) {
+        if (errorType == "unique") {
+            eventElement.nextElementSibling.textContent = duplicateKeyErrorMsg;
+        }
+        else if (errorType == "length") {
+            eventElement.nextElementSibling.textContent = keyLengthErrorMsg;
+        }
+        else {
+            eventElement.nextElementSibling.textContent = nullKeyErrorMsg;
+        }
+    }
+}
+function removeError(eventElement) {
+    //removing disabled  when there is no error
+    submitButton.removeAttribute('disabled');
+    submitButton.classList.remove("disabled");
+    if (eventElement.nextElementSibling != null)
+        eventElement.nextElementSibling.textContent = "";
+}
+function removeInputFields(event) {
+    //this will prevent from submitting the  form 
+    event.preventDefault();
+    let eventTarget = event.target;
+    let keyData;
+    if (eventTarget.parentNode != null && (eventTarget.parentNode instanceof HTMLElement)) {
+        if (eventTarget.parentNode.previousElementSibling != null) {
+            //getting  which data is removing for validation purpose 
+            keyData = eventTarget.parentNode.previousElementSibling.children[0].value;
+            checkAllkeyFields(keyData);
+        }
+        if (eventTarget.parentNode.parentNode != null) {
+            //removes the selected element 
+            eventTarget.parentNode.parentNode.remove();
+        }
+    }
+    //after validation key pairs updated 
+    renderKeyValuePairs();
+}
+function checkAllkeyFields(keyData) {
+    if (keyElementsList.length == keyList.length) {
+        for (let keyElement of keyElementsList) {
+            if (keyElement.value == duplicateKey ||
+                duplicateKeyList.includes(keyElement.value)) {
+                removeError(keyElement);
+            }
+        }
+    }
+    for (let keyElement of keyElementsList) {
+        //whenever the field is removed it is used to validate it 
+        if (keyElement.value == keyData) {
+            removeError(keyElement);
+            return;
+        }
+        if (keyElement.value == '') {
+            setError(keyElement);
             iserror = true;
         }
+        if (keyElement.nextElementSibling?.textContent != "") {
+            iserror = true;
+        }
+        else {
+            iserror = false;
+        }
     }
 }
-function getKeyValuePair() {
+function renderKeyValuePairs() {
     let key, value, singlePair = {};
     for (let keyValueSingleRow of keyValueRowElement) {
-        key = keyValueSingleRow.children[0].children[0].value;
-        value = keyValueSingleRow.children[1].children[0].value;
-        singlePair[key] = value;
-        console.log(singlePair);
-        keyValuePairs = singlePair;
+        if (keyValueSingleRow.children.length >= 2) {
+            key = keyValueSingleRow.children[0].children[0].value;
+            value = keyValueSingleRow.children[1].children[0].value;
+            singlePair[key] = value;
+            keyValuePairs = singlePair;
+        }
     }
+    keyList = Object.keys(keyValuePairs);
 }
-//keylist update on every change
+//it indicates the first key value fields
+inputFieldKeyStart?.addEventListener("change", validateKey);
+//it indicates add button to create a input fields
+createInputFieldButton?.addEventListener("click", createInputField);
+formElement.addEventListener('submit', (e) => {
+    e.preventDefault();
+    checkAllkeyFields();
+    if (!iserror && keyElementsList.length == keyList.length) {
+        window.sessionStorage.setItem("key", JSON.stringify(keyValuePairs));
+        formElement.submit();
+        formElement.reset();
+    }
+    else {
+        //adding disabled for submit button (user can't submit form when error)
+        submitButton.setAttribute('disabled', '');
+        submitButton.classList.add("disabled");
+    }
+});
